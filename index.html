@@ -817,6 +817,7 @@ function renderMatchCard(m) {
   const hasResult = aH !== null && aA !== null;
   const scoreDisplay = hasResult
     ? `<span class="match-result-badge">${aH}–${aA}</span>`
+    : `<span class="match-result-badge not-set">TBD</span>`;
 
   const predBody = state.members.length > 0 ? `
     <div class="actual-score-row">
@@ -847,7 +848,6 @@ function renderMatchCard(m) {
   const lockBadge = locked
     ? '<span class="match-lock">LOCKED</span>'
     : '<span class="match-lock-open">OPEN</span>';
-  const tomorrowBadge = isTmrw ? '<span class="tomorrow-badge"> PREDICT TODAY</span>' : '';
 
   return `<div class="match-card ${isOpen}${isTmrw ? ' tomorrow-match' : ''}" id="card-${m.id}">
     <div class="match-header" onclick="toggleCard('${m.id}')">
@@ -884,6 +884,7 @@ window.setActual = function(matchId, side, val) {
   const badge = document.querySelector(`#card-${matchId} .match-result-badge`);
   if (badge) {
     const h = m.actualHome, a = m.actualAway;
+    badge.textContent = (h !== null && a !== null) ? `${h}–${a}` : 'TBD';
     badge.className = (h !== null && a !== null) ? 'match-result-badge' : 'match-result-badge not-set';
   }
   refreshMatchPoints(matchId);
