@@ -174,9 +174,6 @@
   .match-toggle { color: var(--mid); font-size: 0.75rem; flex-shrink: 0; transition: transform 0.2s; margin-left: 4px; }
   .match-card.open .match-toggle { transform: rotate(180deg); }
 
-  /* Badge row wrapper (used on mobile to push badges below team names) */
-  .match-badges { display: contents; }
-
   .match-body { display: none; padding: 0 14px 16px; border-top: 1px solid var(--border); }
   .match-card.open .match-body { display: block; }
 
@@ -313,13 +310,9 @@
     .score-info strong { font-size: 0.8rem; }
     .score-info p { font-size: 0.68rem; }
 
-    /* Match header: teams on top row, badges on bottom row */
-    .match-header { flex-wrap: wrap; gap: 6px 8px; padding: 10px 12px; }
-    .match-teams { width: 100%; flex: none; }
+    /* Match header stacks cleanly */
     .team-name { font-size: 0.75rem; }
-    .vs-block .match-date { font-size: 0.55rem; }
-    .match-badges { display: flex; align-items: center; gap: 6px; flex: 1; }
-    .match-toggle { margin-left: auto; }
+    .vs-block .match-date { display: block; font-size: 0.55rem; } /* hide date on tiny screens */
 
     /* Prediction table → show member name short */
     .predictions-table td:first-child { max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.78rem; }
@@ -855,7 +848,7 @@ function renderMatchCard(m) {
   const lockBadge = locked
     ? '<span class="match-lock">LOCKED</span>'
     : '<span class="match-lock-open">OPEN</span>';
-  const tomorrowBadge = isTmrw ? '<span class="tomorrow-badge">📅 PREDICT TODAY</span>' : '';
+  const tomorrowBadge = '';
 
   return `<div class="match-card ${isOpen}${isTmrw ? ' tomorrow-match' : ''}" id="card-${m.id}">
     <div class="match-header" onclick="toggleCard('${m.id}')">
@@ -864,11 +857,9 @@ function renderMatchCard(m) {
         <div class="vs-block"><div class="vs-label">vs</div><div class="match-date">${m.date}</div></div>
         <div class="team-name right">${m.away}</div>
       </div>
-      <div class="match-badges">
-        ${scoreDisplay}
-        ${tomorrowBadge}
-        ${lockBadge}
-      </div>
+      ${scoreDisplay}
+      ${tomorrowBadge}
+      ${lockBadge}
       <span class="match-toggle">▼</span>
     </div>
     <div class="match-body">${predBody}</div>
